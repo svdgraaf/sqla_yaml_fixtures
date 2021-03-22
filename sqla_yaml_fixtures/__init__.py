@@ -59,10 +59,10 @@ def _create_obj(ModelBase, session, store,
     :var values (dict): column:value
     '''
     # get reference to SqlAlchemy Mapper
-    model = (
-        getattr(ModelBase, "_decl_class_registry")
-        or ModelBase.registry._class_registry
-    )[model_name]
+    try:
+        model = ModelBase._decl_class_registry[model_name]
+    except AttributeError:
+        model = ModelBase.registry._class_registry[model_name]
 
     # scalars will be passed to mapper __init__
     scalars = {}
